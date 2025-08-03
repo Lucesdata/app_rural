@@ -1,0 +1,11 @@
+# dependencias
+node_modules/
+# builds
+.next/
+out/
+# entorno
+.env*
+# IDE / sistema
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,15 @@
+.container {
+  height: 100dvh;
+  display: grid;
+  place-content: center;
+  padding: 1rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.form {
+  width: 100%;
+}
