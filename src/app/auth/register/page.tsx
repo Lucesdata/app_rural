@@ -1,7 +1,7 @@
 "use client";
 
 import { Theme, Container, Card, Heading } from "@radix-ui/themes";
-import RegisterForm from "@/components/auth/RegisterForm"; // crea este componente
+import RegisterForm from "@/components/auth/RegisterForm";
 
 function RegisterPage() {
   return (
@@ -11,6 +11,7 @@ function RegisterPage() {
       radius="large"
       panelBackground="translucent"
     >
+      {/* Fondo + centrado */}
       <div
         style={{
           display: "flex",
