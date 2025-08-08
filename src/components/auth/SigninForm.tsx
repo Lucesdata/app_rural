@@ -1,102 +1,84 @@
 "use client";
 
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Flex, TextField, Button, Link } from "@radix-ui/themes";
-import {
-  EnvelopeClosedIcon,
-  LockClosedIcon,
-  EnterIcon,
-  PlusCircledIcon,
-} from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { Flex, TextField, Button, Link, Callout } from "@radix-ui/themes";
+import { EnvelopeClosedIcon, LockClosedIcon, EnterIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 
-type SigninInputs = {
-  email: string;
-  password: string;
-};
+type FormData = { email: string; password: string };
 
-function SigninForm() {
-  /* ─── React-Hook-Form ───────────────────────────── */
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<SigninInputs>({
-    defaultValues: { email: "", password: "" },
-  });
+export default function SigninForm() {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = (data: SigninInputs) => {
-    console.log("Datos enviados:", data);
-    // TODO: signIn("credentials", data)
+  const { control, handleSubmit, formState: { isSubmitting } } =
+    useForm<FormData>({ defaultValues: { email: "", password: "" } });
+
+  const onSubmit = async ({ email, password }: FormData) => {
+    setError(null);
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,          // para manejar el error sin cambiar de página
+      callbackUrl: "/dashboard" // a dónde ir si sale bien
+    });
+
+    if (res?.ok) {
+      router.push(res.url ?? "/dashboard");
+    } else {
+      setError(res?.error || "Correo o contraseña incorrectos");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Flex direction="column" gap="4">
-        {/* ─── Email ─────────────────────────────────── */}
+        {/* Email */}
         <Controller
           name="email"
           control={control}
-          rules={{
-            required: "El correo es obligatorio",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Correo no válido",
-            },
-          }}
+          rules={{ required: "Ingresa tu email" }}
           render={({ field }) => (
-            <TextField.Root
-              placeholder="Correo electrónico"
-              type="email"
-              {...field}
-            >
+            <TextField.Root {...field} placeholder="Correo electrónico" type="email">
               <TextField.Slot>
                 <EnvelopeClosedIcon height="16" width="16" />
               </TextField.Slot>
             </TextField.Root>
           )}
         />
-        {errors.email && (
-          <p style={{ color: "var(--red-10)", fontSize: "0.75rem" }}>
-            {errors.email.message}
-          </p>
-        )}
 
-        {/* ─── Password + enlace “Olvidaste…” ───────── */}
+        {/* Password + enlace */}
         <Flex align="center" justify="between">
           <label htmlFor="password">Contraseña</label>
-          <Link href="/auth/forgot" size="2">
-            ¿Olvidaste tu contraseña?
-          </Link>
+          <Link href="/auth/forgot" size="2">¿Olvidaste tu contraseña?</Link>
         </Flex>
 
         <Controller
           name="password"
           control={control}
-          rules={{ required: "La contraseña es obligatoria" }}
+          rules={{ required: "Ingresa tu contraseña" }}
           render={({ field }) => (
-            <TextField.Root
-              id="password"
-              placeholder="Contraseña"
-              type="password"
-              {...field}
-            >
+            <TextField.Root {...field} id="password" placeholder="Contraseña" type="password">
               <TextField.Slot>
                 <LockClosedIcon height="16" width="16" />
               </TextField.Slot>
             </TextField.Root>
           )}
         />
-        {errors.password && (
-          <p style={{ color: "var(--red-10)", fontSize: "0.75rem" }}>
-            {errors.password.message}
-          </p>
+
+        {error && (
+          <Callout color="red" role="status">
+            {error}
+          </Callout>
         )}
 
-        {/* ─── Botones ──────────────────────────────── */}
+        {/* Botones */}
         <Flex gap="3" mt="2">
-          <Button type="submit" style={{ flexGrow: 1 }}>
+          <Button type="submit" disabled={isSubmitting} style={{ flexGrow: 1 }}>
             <EnterIcon />
-            Entrar
+            {isSubmitting ? "Ingresando…" : "Entrar"}
           </Button>
 
           <Button asChild variant="soft" color="cyan">
@@ -110,6 +92,3 @@ function SigninForm() {
     </form>
   );
 }
-
-export default SigninForm;
-

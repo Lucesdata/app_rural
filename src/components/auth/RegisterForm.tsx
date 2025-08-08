@@ -1,7 +1,10 @@
 "use client";
 
 import { useForm, Controller } from "react-hook-form";
-import { Flex, TextField, Button, Link } from "@radix-ui/themes";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { Flex, TextField, Button, Link, Callout } from "@radix-ui/themes";
 import {
   PersonIcon,
   EnvelopeClosedIcon,
@@ -16,8 +19,7 @@ type RegisterInputs = {
   password: string;
 };
 
-function RegisterForm() {
-  /* ─── hook principal ─────────────────────────────── */
+export default function RegisterForm() {
   const {
     handleSubmit,
     control,
@@ -26,16 +28,41 @@ function RegisterForm() {
     defaultValues: { name: "", email: "", password: "" },
   });
 
-  /* ─── al enviar mostramos alerta con los datos ───── */
-  const onSubmit = (data: RegisterInputs) => {
-    alert(JSON.stringify(data, null, 2));   //  ← log temporal
-    // luego reemplazar por fetch("/api/...") o signUp()
+  const router = useRouter();
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const onSubmit = async (data: RegisterInputs) => {
+    setErrorMsg("");
+
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      setErrorMsg(
+        res.status === 409
+          ? "Ese correo ya está registrado"
+          : "Error al crear la cuenta"
+      );
+      return;
+    }
+
+    // Iniciamos sesión directamente
+    await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+
+    router.push("/dashboard");
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <Flex direction="column" gap="4">
-        {/* ─── Nombre ─────────────────────────────────── */}
+        {/* Nombre */}
         <Controller
           name="name"
           control={control}
@@ -48,13 +75,9 @@ function RegisterForm() {
             </TextField.Root>
           )}
         />
-        {errors.name && (
-          <p style={{ color: "var(--red-8)", fontSize: "0.75rem" }}>
-            {errors.name.message}
-          </p>
-        )}
+        {errors.name && <p className="error">{errors.name.message}</p>}
 
-        {/* ─── Email ─────────────────────────────────── */}
+        {/* Email */}
         <Controller
           name="email"
           control={control}
@@ -66,20 +89,20 @@ function RegisterForm() {
             },
           }}
           render={({ field }) => (
-            <TextField.Root placeholder="Correo electrónico" type="email" {...field}>
+            <TextField.Root
+              placeholder="Correo electrónico"
+              type="email"
+              {...field}
+            >
               <TextField.Slot>
                 <EnvelopeClosedIcon height="16" width="16" />
               </TextField.Slot>
             </TextField.Root>
           )}
         />
-        {errors.email && (
-          <p style={{ color: "var(--red-8)", fontSize: "0.75rem" }}>
-            {errors.email.message}
-          </p>
-        )}
+        {errors.email && <p className="error">{errors.email.message}</p>}
 
-        {/* ─── Contraseña ─────────────────────────────── */}
+        {/* Contraseña */}
         <Controller
           name="password"
           control={control}
@@ -88,7 +111,11 @@ function RegisterForm() {
             minLength: { value: 6, message: "Mínimo 6 caracteres" },
           }}
           render={({ field }) => (
-            <TextField.Root placeholder="Contraseña" type="password" {...field}>
+            <TextField.Root
+              placeholder="Contraseña"
+              type="password"
+              {...field}
+            >
               <TextField.Slot>
                 <LockClosedIcon height="16" width="16" />
               </TextField.Slot>
@@ -96,12 +123,16 @@ function RegisterForm() {
           )}
         />
         {errors.password && (
-          <p style={{ color: "var(--red-8)", fontSize: "0.75rem" }}>
-            {errors.password.message}
-          </p>
+          <p className="error">{errors.password.message}</p>
         )}
 
-        {/* ─── Botones ───────────────────────────────── */}
+        {errorMsg && (
+          <Callout.Root color="red">
+            <Callout.Text>{errorMsg}</Callout.Text>
+          </Callout.Root>
+        )}
+
+        {/* Botones */}
         <Flex gap="3" mt="2">
           <Button type="submit" style={{ flexGrow: 1 }}>
             <PlusCircledIcon />
@@ -119,6 +150,3 @@ function RegisterForm() {
     </form>
   );
 }
-
-export default RegisterForm;
-
