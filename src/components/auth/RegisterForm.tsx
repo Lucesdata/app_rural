@@ -1,149 +1,123 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
-import { Flex, TextField, Button, Link, Callout } from "@radix-ui/themes";
-import {
-  PersonIcon,
-  EnvelopeClosedIcon,
-  LockClosedIcon,
-  PlusCircledIcon,
-  EnterIcon,
-} from "@radix-ui/react-icons";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Flex, TextField, Button, Link, Callout, Text } from "@radix-ui/themes";
+import { PersonIcon, EnvelopeClosedIcon, LockClosedIcon, PlusCircledIcon, EnterIcon } from "@radix-ui/react-icons";
 
-type RegisterInputs = {
-  name: string;
-  email: string;
-  password: string;
-};
+const schema = z.object({
+  name: z.string().min(2, "Mínimo 2 caracteres"),
+  email: z.string().email("Email inválido"),
+  password: z.string().min(6, "Mínimo 6 caracteres"),
+  confirm: z.string().min(6, "Mínimo 6 caracteres"),
+}).refine((v) => v.password === v.confirm, {
+  path: ["confirm"],
+  message: "Las contraseñas no coinciden",
+});
+type FormData = z.infer<typeof schema>;
 
 export default function RegisterForm() {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [ok, setOk] = useState(false);
+
   const {
-    handleSubmit,
     control,
-    formState: { errors },
-  } = useForm<RegisterInputs>({
-    defaultValues: { name: "", email: "", password: "" },
+    handleSubmit,
+    formState: { isSubmitting, errors, isValid },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    mode: "onChange",
+    defaultValues: { name: "", email: "", password: "", confirm: "" },
   });
 
-  const router = useRouter();
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const onSubmit = async (data: RegisterInputs) => {
-    setErrorMsg("");
-
+  const onSubmit = async ({ name, email, password }: FormData) => {
+    setError(null);
+    setOk(false);
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ name, email, password }),
     });
 
-    if (!res.ok) {
-      setErrorMsg(
-        res.status === 409
-          ? "Ese correo ya está registrado"
-          : "Error al crear la cuenta"
-      );
-      return;
+    if (res.ok) {
+      setOk(true);
+      // opcional: redirigir directo al login
+      setTimeout(() => router.push("/auth/login"), 1200);
+    } else {
+      const data = await res.json().catch(() => ({}));
+      setError(data.message || "Error al crear la cuenta");
     }
-
-    // Iniciamos sesión directamente
-    await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-
-    router.push("/dashboard");
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Flex direction="column" gap="4">
-        {/* Nombre */}
+      <Flex direction="column" gap="3">
         <Controller
           name="name"
           control={control}
-          rules={{ required: "El nombre es obligatorio" }}
           render={({ field }) => (
-            <TextField.Root placeholder="Nombre completo" {...field}>
-              <TextField.Slot>
-                <PersonIcon height="16" width="16" />
-              </TextField.Slot>
-            </TextField.Root>
+            <>
+              <TextField.Root {...field} placeholder="Nombre completo">
+                <TextField.Slot><PersonIcon height="16" width="16" /></TextField.Slot>
+              </TextField.Root>
+              {errors.name && <Text color="red" size="1">{errors.name.message}</Text>}
+            </>
           )}
         />
-        {errors.name && <p className="error">{errors.name.message}</p>}
 
-        {/* Email */}
         <Controller
           name="email"
           control={control}
-          rules={{
-            required: "El correo es obligatorio",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Correo no válido",
-            },
-          }}
           render={({ field }) => (
-            <TextField.Root
-              placeholder="Correo electrónico"
-              type="email"
-              {...field}
-            >
-              <TextField.Slot>
-                <EnvelopeClosedIcon height="16" width="16" />
-              </TextField.Slot>
-            </TextField.Root>
+            <>
+              <TextField.Root {...field} placeholder="Correo electrónico" type="email">
+                <TextField.Slot><EnvelopeClosedIcon height="16" width="16" /></TextField.Slot>
+              </TextField.Root>
+              {errors.email && <Text color="red" size="1">{errors.email.message}</Text>}
+            </>
           )}
         />
-        {errors.email && <p className="error">{errors.email.message}</p>}
 
-        {/* Contraseña */}
         <Controller
           name="password"
           control={control}
-          rules={{
-            required: "La contraseña es obligatoria",
-            minLength: { value: 6, message: "Mínimo 6 caracteres" },
-          }}
           render={({ field }) => (
-            <TextField.Root
-              placeholder="Contraseña"
-              type="password"
-              {...field}
-            >
-              <TextField.Slot>
-                <LockClosedIcon height="16" width="16" />
-              </TextField.Slot>
-            </TextField.Root>
+            <>
+              <TextField.Root {...field} placeholder="Contraseña" type="password">
+                <TextField.Slot><LockClosedIcon height="16" width="16" /></TextField.Slot>
+              </TextField.Root>
+              {errors.password && <Text color="red" size="1">{errors.password.message}</Text>}
+            </>
           )}
         />
-        {errors.password && (
-          <p className="error">{errors.password.message}</p>
-        )}
 
-        {errorMsg && (
-          <Callout.Root color="red">
-            <Callout.Text>{errorMsg}</Callout.Text>
-          </Callout.Root>
-        )}
+        <Controller
+          name="confirm"
+          control={control}
+          render={({ field }) => (
+            <>
+              <TextField.Root {...field} placeholder="Confirmar contraseña" type="password">
+                <TextField.Slot><LockClosedIcon height="16" width="16" /></TextField.Slot>
+              </TextField.Root>
+              {errors.confirm && <Text color="red" size="1">{errors.confirm.message}</Text>}
+            </>
+          )}
+        />
 
-        {/* Botones */}
+        {ok && <Callout.Root color="green"><Callout.Text>Cuenta creada. Redirigiendo…</Callout.Text></Callout.Root>}
+        {error && <Callout.Root color="red"><Callout.Text>{error}</Callout.Text></Callout.Root>}
+
         <Flex gap="3" mt="2">
-          <Button type="submit" style={{ flexGrow: 1 }}>
-            <PlusCircledIcon />
-            Crear cuenta
+          <Button type="submit" disabled={!isValid || isSubmitting} style={{ flexGrow: 1 }}>
+            <PlusCircledIcon /> {isSubmitting ? "Creando…" : "Crear cuenta"}
           </Button>
 
           <Button asChild variant="soft" color="cyan">
-            <Link href="/auth/login">
-              <EnterIcon />
-              Ya tengo cuenta
-            </Link>
+            <Link href="/auth/login"><EnterIcon /> Ya tengo cuenta</Link>
           </Button>
         </Flex>
       </Flex>

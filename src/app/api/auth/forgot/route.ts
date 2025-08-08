@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     data: { token, userId: user.id, expiresAt },
   });
 
-  const base = process.env.NEXTAUTH_URL || "http://localhost:3000"\;
+  const base = process.env.NEXTAUTH_URL || "http://localhost:3000";
   const resetUrl = `${base}/auth/reset/${token}`;
 
   // En producción enviarías email; en dev lo devolvemos y lo logueamos:

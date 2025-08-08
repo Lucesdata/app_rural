@@ -6,12 +6,32 @@ import { LockClosedIcon, EnterIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
 export default function ResetPage() {
-  const { token } = useParams<{ token: string }>();
+  const params = useParams<{ token: string }>();
+  const token = params?.token;
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  if (!token) {
+    return (
+      <Theme appearance="dark" accentColor="cyan" radius="large" panelBackground="translucent">
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"center", minHeight:"100dvh",
+          background:"linear-gradient(135deg, var(--cyan-3) 0%, var(--cyan-4) 100%)" }}>
+          <Container size="2" px="4" style={{ width:"100%" }}>
+            <Card variant="surface" size="3" style={{ width:"100%", maxWidth:"420px", marginInline:"auto" }}>
+              <Heading as="h1" size="4" align="center" mb="4">Enlace inválido</Heading>
+              <Flex direction="column" gap="3">
+                <Callout.Root color="red"><Callout.Text>El enlace de restablecimiento no es válido.</Callout.Text></Callout.Root>
+                <Link href="/auth/login" size="2">Volver al login</Link>
+              </Flex>
+            </Card>
+          </Container>
+        </div>
+      </Theme>
+    );
+  }
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
