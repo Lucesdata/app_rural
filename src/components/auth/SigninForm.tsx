@@ -69,9 +69,9 @@ export default function SigninForm() {
         />
 
         {error && (
-          <Callout color="red" role="status">
-            {error}
-          </Callout>
+          <Callout.Root color="red" role="status">
+            <Callout.Text>{error}</Callout.Text>
+          </Callout.Root>
         )}
 
         {/* Botones */}
