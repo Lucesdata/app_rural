@@ -13,4 +13,21 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  // Relación con tokens de reseteo de contraseña
+  passwordResetTokens PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relación con usuario
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
 }
