@@ -5,7 +5,12 @@ import { getToken } from "next-auth/jwt";
 const protectedRoutes = [
   "/dashboard",     // panel principal
   "/admin",         // ejemplo de ruta futura
-  "/parcelas"       // ejemplo de CRUD protegido
+  "/parcelas",      // ejemplo de CRUD protegido
+  "/api/readings",  // API protegida
+  "/api/valves",    // API protegida
+  "/plants",
+  "/readings",
+  "/controls",
 ];
 
 export async function middleware(req: NextRequest) {
@@ -44,5 +49,7 @@ export async function middleware(req: NextRequest) {
  * - Así no intercepta assets ni API routes.
  */
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
 };

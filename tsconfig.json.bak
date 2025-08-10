@@ -9,11 +9,10 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",                      // ← necesario para los paths
     "paths": {
-      "@/*": ["./src/*"]                 // alias @ → ./src (ojo con el ./)
+      "@/*": ["src/*"]                   // alias @ → ./src
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": ["node"],                   // tipos de Node para scripts/utilidades
 
     /* ── Checks y modo estricto ─────────────── */
     "strict": true,
@@ -25,7 +24,9 @@
 
     /* ── JSX y plugins de Next.js ───────────── */
     "jsx": "preserve",
-    "plugins": [{ "name": "next" }]
+    "plugins": [
+      { "name": "next" }
+    ]
   },
 
   "include": [

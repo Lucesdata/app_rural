@@ -1,58 +1,16 @@
-// src/app/dashboard/page.tsx
-
-import { getServerSession } from "next-auth/next";               // ruta actualizada
-import { authOptions } from "@/lib/authOptions";                // traemos la configuración desde lib
-import { redirect } from "next/navigation";
-import {
-  Theme,
-  Container,
-  Card,
-  Heading,
-  Text,
-} from "@radix-ui/themes";
-import SignOutButton from "@/components/SignOutButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import DashboardClient from "./ui";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/auth/login");
+  if (!session) return <p>Necesitas iniciar sesión.</p>;
 
-  return (
-    <Theme
-      appearance="dark"
-      accentColor="cyan"
-      radius="large"
-      panelBackground="translucent"
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "100dvh",
-          background:
-            "linear-gradient(135deg, var(--cyan-3) 0%, var(--cyan-4) 100%)",
-        }}
-      >
-        <Container size="2" px="4" style={{ width: "100%" }}>
-          <Card
-            variant="surface"
-            size="3"
-            style={{ width: "100%", maxWidth: "540px", marginInline: "auto" }}
-          >
-            <Heading as="h1" size="5" align="center" mb="4">
-              Panel principal
-            </Heading>
+  const plants = await prisma.plant.findMany({
+    select: { id: true, name: true, code: true },
+    orderBy: { name: "asc" },
+  });
 
-            <Text as="p" align="center" size="3" mb="4">
-              ¡Hola{" "}
-              <strong>{session.user?.name ?? session.user?.email}</strong>!
-            </Text>
-
-            <SignOutButton />
-          </Card>
-        </Container>
-      </div>
-    </Theme>
-  );
+  return <DashboardClient plants={plants} />;
 }
-

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Theme } from "@radix-ui/themes";
+import AppSessionProvider from "@/components/SessionProvider";
+import Navbar from "@/components/Navbar";
 import "@radix-ui/themes/styles.css";
 import "./globals.css";
 
@@ -19,19 +21,16 @@ export const metadata: Metadata = {
   description: "Proyecto Next.js + Radix UI + NextAuth",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {/* Radix Themes SÍ debe ir dentro de <body> */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* Radix Themes debe ir dentro de <body> */}
         <Theme accentColor="grass" radius="large">
-          {children}
+          <AppSessionProvider>
+            <Navbar />
+            <main style={{ padding: "16px" }}>{children}</main>
+          </AppSessionProvider>
         </Theme>
       </body>
     </html>

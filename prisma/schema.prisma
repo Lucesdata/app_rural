@@ -1,10 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+enum Role {
+  USER
+  OPERARIO
+  PRESIDENTE
+  ADMIN
 }
 
 model User {
@@ -12,22 +19,73 @@ model User {
   name      String?
   email     String   @unique
   password  String
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
 
-  // Relación con tokens de reseteo de contraseña
+  // relaciones
+  plants         Plant[]         @relation("PlantResponsibles")
+  controlActions ControlAction[] // <— back-relation
   passwordResetTokens PasswordResetToken[]
+}
+
+model Plant {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  locationLat Float?
+  locationLng Float?
+  createdAt   DateTime @default(now())
+
+  // relaciones
+  valves         Valve[]
+  readings       Reading[]
+  users          User[]          @relation("PlantResponsibles")
+  controlActions ControlAction[] // <— back-relation
+}
+
+model Valve {
+  id        String   @id @default(cuid())
+  plantId   String
+  plant     Plant    @relation(fields: [plantId], references: [id])
+  tag       String // V1003, V1004, etc.
+  type      String // "ENTRADA" | "SALIDA"
+  isOpen    Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  controlActions ControlAction[] // <— back-relation
+}
+
+model Reading {
+  id        String   @id @default(cuid())
+  plantId   String
+  plant     Plant    @relation(fields: [plantId], references: [id])
+  sensorId  String?
+  kind      String // FLOW, LEVEL, PRESSURE, TURBIDITY...
+  unit      String // L/s, m, psi, NTU
+  value     Float
+  timestamp DateTime
+  createdAt DateTime @default(now())
+}
+
+model ControlAction {
+  id        String   @id @default(cuid())
+  plantId   String
+  plant     Plant    @relation(fields: [plantId], references: [id])
+  valveId   String
+  valve     Valve    @relation(fields: [valveId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String // "OPEN" | "CLOSE"
+  reason    String?
+  createdAt DateTime @default(now())
+  result    String? // "OK" | "DENIED" | "ERROR: <detalle>"
 }
 
 model PasswordResetToken {
   id        String   @id @default(cuid())
   token     String   @unique
   userId    String
+  user      User     @relation(fields: [userId], references: [id])
   expiresAt DateTime
   createdAt DateTime @default(now())
-
-  // Relación con usuario
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([token])
-  @@index([userId])
 }

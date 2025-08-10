@@ -1,0 +1,9 @@
+.nav { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #e5e7eb; position:sticky; top:0; background:#fff; z-index:10; }
+.left, .right { display:flex; align-items:center; gap:12px; }
+.brand { font-weight:700; font-size:18px; text-decoration:none; color:#111827; }
+.link { text-decoration:none; color:#374151; padding:6px 8px; border-radius:8px; }
+.link:hover { background:#f3f4f6; }
+.active { background:#e5e7eb; }
+.user { color:#6b7280; font-size:14px; }
+.btn { border:1px solid #d1d5db; background:#fff; padding:6px 10px; border-radius:8px; cursor:pointer; text-decoration:none; color:#111827; }
+.btn:hover { background:#f9fafb; }
