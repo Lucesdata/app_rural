@@ -1,0 +1,13 @@
+ .cards { width: 100%; }
+ .cardsInner {
+   display: grid;
+   gap: 12px;
+   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+ }
+.wrap { display: grid; gap: 12px; }
+.headerCard { background: linear-gradient(90deg, #87CEEB22, #00BFFF22); }
+.selector { display:flex; align-items:center; gap:8px; }
+.selector select {
+  padding:8px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;
+}
+.metaCard { border: 1px solid #eef2f7; }

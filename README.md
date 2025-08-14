@@ -1,3 +1,20 @@
+# Estado del MVP v0.1.0
+
+El MVP incluye:
+
+- Página Home con hero visual, sección de naturaleza del proyecto y grids de plantas agrupadas por tipo de fuente (Bocatoma, Pozo profundo, etc).
+- Tarjetas de planta con placeholders de imagen e íconos SVG según fuente.
+- Datos estáticos en `/public/data/plants_home.json` y estructura lista para agregar más datos.
+- Estructura de carpetas y componentes preparada para integración de API real y datos dinámicos.
+- Estilos modernos con CSS Modules y Radix Themes.
+
+# Pendientes del Sprint 2
+
+- Integrar API real con fallback a datos estáticos.
+- Mostrar estadísticas y KPIs dinámicos en Home y Dashboard.
+- Cargar imágenes reales de plantas y ubicaciones.
+- Listar eventos recientes y alertas operativas.
+- Agregar pruebas E2E y validación de flujos críticos.
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

@@ -1,0 +1,12 @@
+[
+  { "id": "PLT_CASCAJAL", "ptap": "PTAP Cascajal", "nombre": "ASOCASCAJAL", "vereda": "Cascajal", "corregimiento": "Hormiguero", "fuente": "Pozo profundo", "alias": "PLT_CASCAJAL" },
+  { "id": "PLT_CAMPOALEGRE", "ptap": "PTAP Campoalegre", "nombre": "ACOPS", "vereda": "Campoalegre", "corregimiento": "Montebello", "fuente": "Bocatoma", "alias": "PLT_CAMPOALEGRE" },
+  { "id": "PLT_SOLEDAD", "ptap": "PTAP Soledad", "nombre": "ACUABUITRERA", "vereda": "Soledad", "corregimiento": "Buitrera", "fuente": "Bocatoma", "alias": "PLT_SOLEDAD" },
+  { "id": "PLT_CARBONERO", "ptap": "PTAP Carbonero", "nombre": "ACUABUITRERA", "vereda": "Carbonero", "corregimiento": "Buitrera", "fuente": "Bocatoma", "alias": "PLT_CARBONERO" },
+  { "id": "PLT_VORAGINE", "ptap": "PTAP Voragine", "nombre": "ASOVORAGINE", "vereda": "Voragine", "corregimiento": "Pance", "fuente": "Bocatoma", "alias": "PLT_VORAGINE" },
+  { "id": "PLT_LOS_MANGOS", "ptap": "PTAP Los Mangos", "nombre": "J.A.A.  Alto los Mangos", "vereda": "Alto Los Mangos", "corregimiento": "Buitrera", "fuente": "Bocatoma", "alias": "PLT_LOS_MANGOS" },
+  { "id": "PLT_LA_SIRENA", "ptap": "PTAP La Sirena", "nombre": "ASUAP La Sirena", "vereda": "La Sirena", "corregimiento": "Buitrera", "fuente": "Bocatoma", "alias": "PLT_LA_SIRENA" },
+  { "id": "PLT_KM18", "ptap": "PTAP Km 18", "nombre": "ACUA 18", "vereda": "Kilometro 18", "corregimiento": "La Elvira", "fuente": "Bocatoma", "alias": "PLT_KM18" },
+  { "id": "PLT_MONTEBELLO", "ptap": "PTAP  Montebello", "nombre": "SERVIAGUAS", "vereda": "Montebello", "corregimiento": "Montebello", "fuente": "Bocatoma", "alias": "PLT_MONTEBELLO" },
+  { "id": "PLT_PICHINDE", "ptap": "PTAP Pichinde", "nombre": "ACUAPICHINDÉ", "vereda": "Pichinde", "corregimiento": "Pichinde", "fuente": "Bocatoma", "alias": "PLT_PICHINDE" }
+]
