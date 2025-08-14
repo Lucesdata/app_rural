@@ -4,21 +4,31 @@ import path from "path";
 
 function norm(s: string) { return (s ?? "").toString().trim().toLowerCase(); }
 
-export async function GET(_: Request, { params }: { params: { code: string } }) {
+import { NextRequest } from "next/server";
+
+export async function GET(req: NextRequest) {
   try {
     const file = path.join(process.cwd(), "public", "data", "plants_meta.json");
     const json = JSON.parse(fs.readFileSync(file, "utf8"));
-    const q = norm(params.code);
+    // Extraer el parámetro code de la URL
+    const url = new URL(req.url);
+    const code = url.pathname.split("/").pop() ?? "";
+    const q = norm(code);
 
-    const item = json.find((p: any) =>
-      norm(p.code) === q || norm(p.alias) === q || norm(p.ptap) === q
-    );
+    const item = json.find((p: Record<string, unknown>) => {
+      if (typeof p !== 'object' || p === null) return false;
+      const code = typeof p['code'] === 'string' ? p['code'] : '';
+      const alias = typeof p['alias'] === 'string' ? p['alias'] : '';
+      const ptap = typeof p['ptap'] === 'string' ? p['ptap'] : '';
+      return norm(code) === q || norm(alias) === q || norm(ptap) === q;
+    });
 
     if (!item) {
       return NextResponse.json({ error: "Plant not found" }, { status: 404 });
     }
     return NextResponse.json(item);
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message || "Error" }, { status: 500 });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : 'Error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

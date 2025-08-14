@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { compare } from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as any,
+  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   providers: [
     Credentials({
@@ -20,22 +20,25 @@ export const authOptions: NextAuthOptions = {
         if (!user) return null;
         const ok = await compare(creds.password, user.password);
         if (!ok) return null;
-        return { id: user.id, email: user.email, name: user.name ?? undefined, role: user.role } as any;
+        return { id: user.id, email: user.email, name: user.name ?? undefined, role: user.role };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        token.id = (user as any).id;
-        token.role = (user as any).role;
+      if (user && typeof user === 'object') {
+        const u = user as { id?: string; role?: string };
+        if (u.id) token.id = u.id;
+        if (u.role && ["USER", "OPERARIO", "PRESIDENTE", "ADMIN"].includes(u.role)) {
+          token.role = u.role as "USER" | "OPERARIO" | "PRESIDENTE" | "ADMIN";
+        }
       }
       return token;
     },
     async session({ session, token }) {
-      if (token) {
-        (session.user as any).id = token.id;
-        (session.user as any).role = token.role;
+      if (token && session.user && typeof session.user === 'object') {
+        (session.user as { id?: string; role?: string }).id = token.id as string;
+        (session.user as { id?: string; role?: string }).role = token.role as string;
       }
       return session;
     },
