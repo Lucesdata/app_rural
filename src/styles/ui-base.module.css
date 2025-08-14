@@ -1,0 +1,50 @@
+/* Utilidades base para UI */
+
+.container {
+  max-width: var(--container-max, 1200px);
+  margin: 0 auto;
+  padding-left: var(--gutter, 24px);
+  padding-right: var(--gutter, 24px);
+  width: 100%;
+}
+
+.section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  padding: 32px;
+}
+
+.button {
+  background: var(--brand);
+  color: var(--brand-contrast);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75em 2em;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.button:hover, .button:focus {
+  background: var(--dark);
+  color: var(--dark-contrast);
+  outline: 2px solid var(--brand);
+}
+
+.chip {
+  display: inline-block;
+  background: var(--muted);
+  color: var(--card);
+  border-radius: 999px;
+  padding: 0.25em 1em;
+  font-size: var(--small);
+  font-weight: 500;
+  margin-right: 0.5em;
+}

@@ -14,7 +14,7 @@ export default function Home() {
     <div className={styles.root}>
 
       {/* Hero dos columnas */}
-      <section className={styles.hero}>
+  <section className={`${styles.hero} container section`}>
         <div className={styles.heroInner}>
           <div className={styles.heroLeft}>
             <h1 className={styles.heroTitle}>
@@ -37,36 +37,36 @@ export default function Home() {
 
 
       {/* Fila de partners/chips */}
-      <section className={styles.partners} aria-label="Tipos y stats">
+      <section className="container section" aria-label="Tipos y stats">
         <ul className={styles.chipList} role="list">
-          <li className={styles.chip} aria-label="Bocatoma">
+          <li className={`chip ${styles.chip}`} aria-label="Bocatoma">
             <span className={styles.chipIcon}>💧</span> Bocatoma
           </li>
-          <li className={styles.chip} aria-label="Pozo profundo">
+          <li className={`chip ${styles.chip}`} aria-label="Pozo profundo">
             <span className={styles.chipIcon}>🛢️</span> Pozo profundo
           </li>
-          <li className={styles.chip} aria-label="10 PTAPs">
+          <li className={`chip ${styles.chip}`} aria-label="10 PTAPs">
             <span className={styles.chipIcon}>🏭</span> 10 PTAPs
           </li>
-          <li className={styles.chip} aria-label="996 usuarios">
+          <li className={`chip ${styles.chip}`} aria-label="996 usuarios">
             <span className={styles.chipIcon}>👥</span> 996 usuarios
           </li>
         </ul>
       </section>
 
       {/* Bloque de beneficios (3 tarjetas) */}
-      <section className={styles.benefits} aria-label="Beneficios">
-        <div className={styles.benefitCard}>
+      <section className={`${styles.benefits} container section`} aria-label="Beneficios">
+        <div className={`card ${styles.benefitCard}`}>
           <span className={styles.benefitIcon}>⏱️</span>
           <h3 className={styles.benefitTitle}>Monitoreo en tiempo real <span className={styles.soon}>(pronto)</span></h3>
           <p className={styles.benefitDesc}>Visualiza datos de sensores y estado de plantas en un solo lugar.</p>
         </div>
-        <div className={styles.benefitCard}>
+  <div className={`card ${styles.benefitCard}`}>
           <span className={styles.benefitIcon}>⚡</span>
           <h3 className={styles.benefitTitle}>Alertas tempranas</h3>
           <p className={styles.benefitDesc}>Recibe notificaciones ante eventos críticos o valores fuera de rango.</p>
         </div>
-        <div className={styles.benefitCard}>
+  <div className={`card ${styles.benefitCard}`}>
           <span className={styles.benefitIcon}>📊</span>
           <h3 className={styles.benefitTitle}>Reportes y trazabilidad</h3>
           <p className={styles.benefitDesc}>Genera reportes y consulta el historial de lecturas y eventos.</p>
@@ -74,7 +74,7 @@ export default function Home() {
       </section>
 
       {/* Barra de KPIs */}
-      <section className={styles.kpis} aria-label="KPIs">
+  <section className="container section" aria-label="KPIs">
         {/* TODO: conectar a /api/stats o usar JSON local */}
         <div className={styles.kpiBar}>
           <div className={styles.kpi}><span className={styles.kpiValue}>10</span><span className={styles.kpiLabel}>Plantas</span></div>
@@ -86,7 +86,7 @@ export default function Home() {
       </section>
 
       {/* ¿Por qué usar app-rural? */}
-      <section className={styles.why} aria-label="¿Por qué usar app-rural?">
+  <section className="container section" aria-label="¿Por qué usar app-rural?">
         <div className={styles.whyCard}>
           <h3 className={styles.whyTitle}>Gestión centralizada</h3>
           <p className={styles.whyDesc}>Administra múltiples plantas y usuarios desde un solo panel, con acceso seguro y trazabilidad.</p>
@@ -105,7 +105,7 @@ export default function Home() {
       </section>
 
       {/* Banda oscura con pasos */}
-      <section className={styles.stepsBand} aria-label="Cómo funciona">
+  <section className="container section" aria-label="Cómo funciona">
         <div className={styles.stepsWrap}>
           <div className={styles.stepCard}>
             <span className={styles.stepNum}>1</span>
@@ -126,14 +126,14 @@ export default function Home() {
       </section>
 
       {/* Cards de módulos */}
-      <section className={styles.modules} aria-label="Módulos">
-        <div className={styles.moduleCard}>
+      <section className="container section" aria-label="Módulos">
+        <div className={`card ${styles.moduleCard}`}>
           <span className={styles.moduleIcon}>👷‍♂️</span>
           <h3 className={styles.moduleTitle}>Operario</h3>
           <p className={styles.moduleDesc}>Registro de lecturas, control de válvulas y visualización de alertas.</p>
           <a href="/auth/login" className={styles.primaryBtn}>Entrar</a>
         </div>
-        <div className={styles.moduleCard}>
+  <div className={`card ${styles.moduleCard}`}>
           <span className={styles.moduleIcon}>📑</span>
           <h3 className={styles.moduleTitle}>Administración/Reportes</h3>
           <p className={styles.moduleDesc}>Gestión de usuarios, reportes y trazabilidad de eventos.</p>
@@ -142,11 +142,11 @@ export default function Home() {
       </section>
 
       {/* CTA final banda oscura */}
-      <section className={styles.ctaBand} aria-label="CTA final">
+  <section className="container section" aria-label="CTA final">
         <h2 className={styles.ctaTitle}>¿Listo para nivelar tus plantas?</h2>
         <div className={styles.ctaActions}>
-          <a href="/auth/login" className={styles.primaryBtn}>Comenzar</a>
-          <a href="/plants" className={styles.secondaryBtn}>Explorar</a>
+          <a href="/auth/login" className="button">Comenzar</a>
+          <a href="/plants" className="button">Explorar</a>
         </div>
       </section>
 

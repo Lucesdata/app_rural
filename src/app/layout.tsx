@@ -29,7 +29,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Theme accentColor="grass" radius="large">
           <AppSessionProvider>
             <Navbar />
-            <main style={{ padding: "16px" }}>{children}</main>
+            <main style={{
+              padding: "16px",
+              paddingTop: "var(--header-height, 64px)",
+              maxWidth: "var(--container-max, 1200px)",
+              margin: "0 auto"
+            }}>{children}</main>
           </AppSessionProvider>
         </Theme>
       </body>

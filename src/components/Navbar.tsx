@@ -38,15 +38,15 @@ export default function Navbar() {
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/plants", label: "Plantas" },
+    { href: "/dashboard", label: "Dashboard" },
     { href: "#acerca", label: "Acerca" },
     { href: "#contacto", label: "Contacto" },
   ];
 
   function isActive(href: string) {
-    if (!pathname) return false;
-    if (href === "/") return pathname === "/";
-    if (href.startsWith("#")) return false;
-    return pathname.startsWith(href);
+  if (!pathname) return false;
+  if (href.startsWith("#")) return false;
+  return pathname.startsWith(href);
   }
 
   return (
