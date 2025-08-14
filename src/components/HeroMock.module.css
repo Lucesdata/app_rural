@@ -1,0 +1,27 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: flex-end;
+  pointer-events: none;
+}
+.card {
+  width: 220px;
+  height: 64px;
+  background: var(--color-primary-50);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-primary-100);
+  opacity: 0.9;
+  margin-right: var(--space-sm);
+}
+.stack .card:nth-child(2) {
+  width: 180px;
+  opacity: 0.7;
+  margin-right: var(--space-xl);
+}
+.stack .card:nth-child(3) {
+  width: 140px;
+  opacity: 0.5;
+  margin-right: var(--space-3xl);
+}

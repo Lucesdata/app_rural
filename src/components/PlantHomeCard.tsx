@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import styles from "./plant-card.module.css";
+import styles from "./PlantHomeCard.module.css";
 import { Plant } from "@/types/plants";
 
 export default function PlantHomeCard({ plant }: { plant: Plant }) {
