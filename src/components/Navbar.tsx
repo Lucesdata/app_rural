@@ -49,8 +49,9 @@ export default function Navbar() {
   return pathname.startsWith(href);
   }
 
+  const isHome = pathname === "/";
   return (
-    <nav className={styles.nav}>
+    <nav className={isHome ? `${styles.nav} ${styles.transparent}` : styles.nav}>
       <div className={styles.left}>
         <Link href="/" className={styles.brand}>app-rural</Link>
       </div>

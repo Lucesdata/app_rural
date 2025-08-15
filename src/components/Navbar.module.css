@@ -1,3 +1,36 @@
+/* Navbar transparente solo en Home */
+.transparent {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: transparent;
+	box-shadow: none;
+	border-bottom: none;
+	color: #fff;
+	z-index: 100;
+}
+
+.transparent .brand,
+.transparent .link,
+.transparent .menuBtn {
+	color: #fff !important;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.transparent .link:focus,
+.transparent .link:active,
+.transparent .menuBtn:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px var(--focus-ring, #fff7) !important;
+	border-radius: var(--radius-md);
+}
+
+.transparent .brand:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px var(--focus-ring, #fff7) !important;
+	border-radius: var(--radius-md);
+}
 
 /* Navbar principal */
 .nav {

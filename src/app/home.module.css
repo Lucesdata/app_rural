@@ -1,3 +1,98 @@
+/* Hero principal */
+.hero {
+	position: relative;
+	min-height: 78vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: url('/images/plant-placeholder.jpg') center/cover no-repeat;
+	color: #fff;
+	text-align: center;
+	overflow: hidden;
+}
+
+.overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(0,0,0,0.45);
+	z-index: 1;
+	pointer-events: none;
+}
+
+.heroContent {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	max-width: 700px;
+	margin: 0 auto;
+	padding-top: 7vh;
+	padding-bottom: 7vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-xl);
+}
+
+.heroTitle {
+	font-size: var(--font-size-3xl);
+	font-weight: 800;
+	text-shadow: 0 2px 12px rgba(0,0,0,0.22);
+	margin-bottom: var(--space-md);
+	line-height: 1.1;
+}
+
+.lead {
+	color: rgba(255,255,255,0.92);
+	font-size: var(--font-size-lg);
+	text-shadow: 0 1px 6px rgba(0,0,0,0.18);
+	margin-bottom: var(--space-lg);
+}
+
+.ctaRow {
+	display: inline-flex;
+	gap: var(--space-md);
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+@media (max-width: 600px) {
+	.heroContent {
+		padding-top: 3vh;
+		padding-bottom: 3vh;
+	}
+	.heroTitle {
+		font-size: var(--font-size-xl);
+	}
+}
+
+/* Sección KPIs */
+.kpiSection {
+	background: #fff;
+	padding: var(--space-3xl) 0;
+}
+
+/* Sección Plantas */
+.plantSection {
+	background: var(--color-neutral-50);
+	padding: var(--space-3xl) 0;
+}
+
+.plantGrid {
+	display: grid;
+	gap: var(--space-xl);
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.plantGrid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+@media (min-width: 1280px) {
+	.plantGrid {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
 @import "../styles/ui-base.module.css";
 /* Navigation Bar */
 .nav {
